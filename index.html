@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="keywords" content="AnaMoDiff, Animation, Motion, Diffusion Models, Motion Transfer, 2D Motion">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- HTML Meta Tags -->
+  <title>AnaMoDiff: 2D Analogical Motion Diffusion via Disentangled Denoising</title>
+  <meta name="description" content="AnaMoDiff">
+
+  <!-- Facebook Meta Tags -->
+  <meta property="og:url" content="anamodiff.github.io">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AnaMoDiff: 2D Analogical Motion Diffusion via Disentangled Denoising">
+  <meta property="og:description" content="AnaMoDiff: 2D Motion Transfer">
+  <meta property="og:image" content="https://anamodiff.github.io/static/images/image.png">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:domain" content="anamodiff.github.io">
+  <meta property="twitter:url" content="https://anamodiff.github.io/">
+  <meta name="twitter:title" content="AnaMoDiff: 2D Analogical Motion Diffusion via Disentangled Denoising">
+  <meta name="twitter:description" content="AnaMoDiff: 2D Motion Transfer">
+  <meta name="twitter:image" content="https://anamodiff.github.io/static/images/image.png">
+        
+
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1K2WRTTLRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1K2WRTTLRE');
+</script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+ 
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">AnaMoDiff: 2D Analogical Motion Diffusion via Disentangled Denoising</h1>
+          <div class="is-size-5 publication-authors">
+          
+          </div>
+
+          <div class="is-size-5 publication-authors">
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="./static/paper/paper.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+          
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Soon)</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+            
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img id="teaser" height="100%" alt="AnaMoDiff: Teaser" src="./static/images/teaser.gif"/>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">AnaMoDiff: </span> 2D Analogical Motion Diffusion via Disentangled Denoising
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We present AnaMoDiff , a novel diffusion-based method for <b>2D motion analogies</b> that is applied to raw, 
+            unannotated videos of articulated characters. Our goal is to accurately transfer motions from a 2D driving 
+            video onto a source character, with its identity, in terms of appearance and natural movement, well preserved, 
+            even when there may be significant discrepancies between the source and driving characters in their part proportions 
+            and movement speed and styles. 
+          </p> 
+          
+          <p>
+            Our diffusion model transfers the input motion via a latent optical flow (LOF) network operating in a noised latent space, 
+            which is spatially aware, efficient to process compared to the original RGB videos, and artifact-resistant through 
+            the diffusion denoising process even amid dense movements. To accomplish both motion analogy and identity preservation, 
+            we train our denoising model in a feature-disentangled manner, operating at <b>two noise levels</b>.
+          </p>
+
+          <p>
+            While identity-revealing features of the source are learned via conventional noise injection, motion features are learned from LOF-warped 
+            videos by only injecting noise with large values, with the stipulation that motion properties involving pose and limbs are encoded by 
+            higher-level features. We demonstrate that our method achieves the best trade-off between motion analogy and identity preservation.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+
+<section>
+    <div class="container is-max-desktop">
+        
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+              <h2 class="title is-3">Pipeline</h2>
+              </div>
+              </div>
+    </div>
+
+    <div class="columns is-centered">
+    <img id="pipeline" width="60%" alt="Pipe-Line" src="./static/images/pipeline.png"/>
+    </div>
+
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <div class="content has-text-justified">
+            <p>
+                Given a source video, a frame (e.g., the first one), is selected and mapped to the noisy latent space. A key-point-based warping is applied to the noisy
+                latent to transfer the motion of the driving video to the chosen frame. The resulting warped noisy latents along with a condition vector obtained from a text
+                prompt (e.g., turtle) are sent to a UNet fine-tuned via LoRA. The resulting denoised warped latents are sent to the SD’s decoder to produce the output video.
+            </p> 
+          </div>
+        </div>
+      </div>
+  
+      
+    </div>
+  </section>
+
+
+<br><br>
+
+  <section>
+
+
+    <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+                <h2 class="title is-3">Animal Motion Results</h2>
+                <div class="content is-centered">
+                <p>
+                    The source is a video depicting the "natural" motion of the animal. The first frame of source video is used to 
+                    apply motion to.
+                </p> 
+                </div>
+        </div>
+    </div>
+    </div>
+
+
+  <!-- <div class="hero-body"> -->
+    <div class="container is-max-desktop is-centered ">
+      <!-- <div class="container"> -->
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item item-r1">
+            <img src="./static/images/animal/06.gif" alt="Animal Motion1"  />
+          </div>
+          <div class="item item-r2">
+            <img src="./static/images/animal/02.gif" alt="Animal Motion2"  />
+          </div>
+          <div class="item item-r3">
+            <img src="./static/images/animal/03.gif" alt="Animal Motion3" />
+          </div>
+          <div class="item item-r4">
+            <img src="./static/images/animal/04.gif" alt="Animal Motion4" />
+          </div>
+          <div class="item item-r5">
+            <img src="./static/images/animal/05.gif" alt="Animal Motion5" />
+          </div>
+         
+        </div>
+      </div>
+    </div>
+
+
+</section>
+
+
+
+
+
+<section>
+
+
+    <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+                <h2 class="title is-3">Letter Motion Results</h2>
+                <div class="content is-centered">
+                <p>
+                    The source here is an image as there is no natural motion when it comes to letters.
+                </p> 
+                </div>
+        </div>
+    </div>
+    </div>
+
+
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered ">
+        <!-- <div class="container"> -->
+          <div id="results-carousel" class="carousel results-carousel">
+            <div class="item item-r1">
+              <img src="./static/images/letter/01.gif" alt="Animal Motion1"  />
+            </div>
+            <div class="item item-r2">
+              <img src="./static/images/letter/02.gif" alt="Animal Motion2"  />
+            </div>
+            <div class="item item-r3">
+              <img src="./static/images/letter/03.gif" alt="Animal Motion3" />
+            </div>
+            <div class="item item-r4">
+              <img src="./static/images/letter/04.gif" alt="Animal Motion4" />
+            </div>
+            <div class="item item-r5">
+              <img src="./static/images/letter/05.gif" alt="Animal Motion5" />
+            </div>
+           
+          </div>
+        </div>
+      </div>
+
+
+</section>
+
+
+
+
+
+<section>
+
+
+    <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+                <h2 class="title is-3">Custom Results</h2>
+                <div class="content is-centered">
+                <p>
+                    We show some custom results to show generality of the method.
+                </p> 
+                </div>
+        </div>
+    </div>
+    </div>
+
+
+  <div class="hero-body">
+    <div class="container is-max-desktop is-centered ">
+        <!-- <div class="container"> -->
+          <div id="results-carousel" class="carousel results-carousel">
+            <div class="item item-r1">
+              <img src="./static/images/custom/01.gif" alt="Animal Motion1"  />
+            </div>
+            <div class="item item-r2">
+              <img src="./static/images/custom/02.gif" alt="Animal Motion2"  />
+            </div>
+            <div class="item item-r3">
+              <img src="./static/images/custom/03.gif" alt="Animal Motion3" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <!-- <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a> -->
+      <!-- <a class="icon-link" href="" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a> -->
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Website source code based on the source code of
+             <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
